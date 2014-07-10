@@ -1,33 +1,20 @@
-# Shopify Plus
+# The Shopify API
 
-### The Shopify API -- Chris Saunders
+### Chris Saunders
 
 ---
 
 # API?
 
-## Not every customer requirement should exist as a feature within Shopify
+## Allows developers to extend the Shopify platform
 
 ---
 
-# How we justify a feature
-
-- Can every customer use it?
-  - Add it to Shopify
-- Do some customers need it?
-  - Make it an app
-- Does one customer need it?
-  - Custom Application
-
----
-
-# What kinds of needs do Plus customers have?
+# What kinds of needs do merchants have?
 
 ---
 
 ## Unique Integrations
-
-## More features than what Shopify offers
 
 ## Deeper Analysis
 
@@ -35,105 +22,27 @@
 
 ---
 
-# Accessing the API
-
-## Private Apps
-## OAuth 2
+Box and Arrow simplification of REST API
 
 ---
 
-# Private Apps
-
-### These work for a single shop
-### Authentication is simple Basic Auth
-### Are created through the admin
-### Full API Permissions
+Shopify as the client, sending data to your server
 
 ---
 
-# OAuth Apps
-
-### Granular API Access
-### Application will be used by more than one shop
+Your app embedded in Shopify storefront or admin
 
 ---
 
-# OAuth
-
-- There are plenty of libraries that exist which makes OAuth very straight forward
-- In ruby there is the omniauth-shopify-oauth2 gem
-
----
-
-# OAuth in Ruby
-
-```ruby
-require 'rubygems'
-require 'rack'
-require 'sinatra'
-require 'omniauth-shopify-oauth2'
-
-# Configure Ominauth middleware
-use Rack::Session::Cookie
-use OmniAuth::Builder do
-  provider :shopify, 'api key', 'shared secret',
-           scope: 'read_products',
-           setup: lambda { |env|
-            params = Rack::Utils.parse_query(env['QUERY_STRING'])
-            env['omniauth.strategy'].options[:client_options][:site] = "https://#{params['shop']}"
-          }
-end
-
-# Login Screen
-get '/' do
-  '''
-  <form method="get" action="/auth/shopify">
-    <input type="text" name="shop" />
-    <input type="submit" value="Login with Shopify" />
-  </form>
-  '''
-end
-
-# Application Success
-get '/auth/:provider/callback' do
-  '''
-  <p>Your access token is: #{request.env["omniauth.auth"]["credentials"]["token"]}</p>
-  '''
-end
-
-# Failure :(
-get '/auth/failure' do
-  "(V)(;,,,;)(V) Something went wrong!"
-end
-
-```
-
----
-
-# Working with the API
-
-```ruby
-# Fetch a list of orders
-require 'net/http'
-uri = URI('https://justmops.myshopify.com/admin/orders.json')
-Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |client|
-  request = Net::HTTP::Get.new(uri)
-  request['Content-Type'] = 'application/json'
-  request['Accept'] = 'application/json'
-  request['X-Shopify-Access-Token'] = 'access token'
-
-  response = client.request(request)
-  # Let's just grab the first 30 characters
-  puts response.body[0..30]
-  # {"orders":[{"buyer_accepts_mark
-end
-```
+# API Demo
 
 ---
 
 # REST and Shopify
 
-All<sup>*</sup> of Shopifys resources follow a similar pattern:
+### Turn all of these into single slides
+
+All of Shopifys resources follow a similar pattern:
 
 - List a page of Resources:
   `GET https://domain/admin/resource_name.json`
@@ -153,13 +62,29 @@ All<sup>*</sup> of Shopifys resources follow a similar pattern:
 
 ---
 
-# Aspects of the API
+# Working with the API - HTTP Request
 
-- API Resources (orders, products, etc)
-- Application Proxies & Script Tags
-- Customer Login Providers (Multipass login)
-- Webhooks
-- App Links
+ TODO: Just use plain HTTP requests
+
+ ---
+
+# Working with the API - HTTP Response
+
+```ruby
+# Fetch a list of orders
+require 'net/http'
+uri = URI('https://justmops.myshopify.com/admin/orders.json')
+Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |client|
+  request = Net::HTTP::Get.new(uri)
+  request['Content-Type'] = 'application/json'
+  request['Accept'] = 'application/json'
+  request['X-Shopify-Access-Token'] = 'access token'
+
+  response = client.request(request)
+  puts response.body
+  # {"orders":[{"buyer_accepts_mark....
+end
+```
 
 
 ---
@@ -192,6 +117,10 @@ end
 
 ---
 
+# Supporting multiple Shops
+
+---
+
 # Serving your Apps
 
 Use the Embedded App SDK to give your customers a nicer experience
@@ -201,20 +130,22 @@ Use the Embedded App SDK to give your customers a nicer experience
 
 ---
 
-# Safely Interfacing with a Merchants Storefront
+# Shop Storefront
 
-## Modifying templates is messy
-### Breaks the rule of "never leave a trace"
-### Changes are lost if merchant installs new theme
+## Script Tags to easily provide storefront javascript
+## Application proxies to provide custom URLs
 
 ---
 
 # Application Proxies
 
-![](app-proxies.png)
-
 - Allow you to render data in the storefront
 - Can return liquid and Shopify will render it!
+- Just returning plain HTML just works
+
+---
+
+![](app-proxies.png)
 
 ---
 
@@ -223,11 +154,7 @@ Use the Embedded App SDK to give your customers a nicer experience
 ```ruby
 require 'sinatra'
 
-before do
-  halt 401, 'Unauthorized' unless verify_authenticity
-end
-
-get '/' do
+get '/proxies/products-with-even-ids' do
   headers 'Content-Type' => 'application/liquid'
   """
   <p>Products with Even Ids</p>
@@ -246,9 +173,8 @@ end
 
 # Script Tags
 
-- Easily embed custom javascript in a merchants storefront
-- Always rendered regardless of when installed
-- Need to be hosted somewhere (your server, S3, etc.)
+## Let's you inject external javascript into a shops storefront
+## Associated to an app installation. Removing app also removes the script tags
 
 ---
 
@@ -274,39 +200,42 @@ end
 
 ---
 
+# Theme Access
+
+### Not inteded as a tool for injecting app content into shop templates
+### Modifying templates is messy
+### Makes it difficult for an application to clean up after itself
+### Changes are lost if merchant installs new theme
+
+---
+
 # Multipass
 
-- Provide a way for a user on another property to login as a customer on the shop
-- Token validity is short-lived. Generation needs to be done as required
+- Only available to Shopify Plus customers
+- Associates Shopify customers with external identities (e.g from forums)
 - Shop needs to have multipass enabled on their Checkout Settings
 
 ---
 
 # Registering a Multipass Customer
 
-```ruby
-# Should this be a more involved demo?
-# http://docs.shopify.com/api/tutorials/multipass-login
-require 'base64'
-
-secret = 'secret from admin'
-customer_data = {
-  email: 'snake-plisken@example.com',
-  created_at: '1997-06-01',
-  first_name: 'Bob',
-  last_name: 'Plisken'
-}
-```
+## FLOWCHART
 
 ---
 
 # App Links
 
-![](application-link.png)
-
 - Provide contextual actions on shopify resources
 - Shortcuts to areas of your application
 - Added through the Partner Dashboard
+
+---
+
+![](application-link.png)
+
+---
+
+SCREENSHOT IN ADMIN
 
 ---
 
@@ -319,7 +248,7 @@ customer_data = {
 
 ---
 
-# Webhook Gotchas
+# Webhooks
 
 - You need the right permissions to register for a webhook
   - Can't register for order creation webhooks if you can only read products
@@ -328,7 +257,11 @@ customer_data = {
 
 ---
 
-# Webhook Gotchas
+# Call me Maybe
+
+---
+
+# Webhooks
 
 - The data in the webhook is slightly different from our API responses
   - No root node (i.e. {data} instead of {order: {data}})
@@ -355,27 +288,7 @@ end
 
 ---
 
-# Validating a Webhook
-
-```
-require 'sinatra'
-require 'openssl'
-require 'base64'
-
-post '/shopify/webhooks' do
-  process_in_background(params) if valid_webhook?
-end
-
-SECRET = 'my app secret'
-
-def valid_webhook?
-  request.body.rewind
-  data = request.body.read
-  digest = OpenSSL::Digest::Digest.new('sha256')
-  calculated_hmac = Base64.strict_encode64(OpenSSL::HMAC.digest, SECRET, data)
-  request['X-Shopify-Hmac-SHA256'] == calculated_hmac
-end
-```
+# Carrier Services
 
 ---
 
@@ -403,14 +316,6 @@ end
 
 ---
 
-# API Client Libraries
-
-## As demonstrated, using the API doesn't require a client. Your HTTP library can do the work if necessary
-
----
-
-# Playing with the API
-
 ![original](postman.png)
 
 ---
@@ -420,3 +325,7 @@ end
 ---
 
 # ecommerce.shopify.com/c/shopify-apis-and-technology
+
+---
+
+# Q & A
