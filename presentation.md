@@ -117,7 +117,55 @@ end
 
 ---
 
+# Staying up to date with Webhooks
+
+- Let us tell you when things have changed
+- Don't bite into your API call limits
+- Let you subscribe to the kinds of data you are interested in
+- Data is signed
+
+---
+
+# Webhooks
+
+- You need the right permissions to register for a webhook
+  - Can't register for order creation webhooks if you can only read products
+- Don't include historical data
+  - Webhooks contain a snapshot of the data when it was delivered, not when it was queued
+
+---
+
+# Webhooks
+
+- The data in the webhook is slightly different from our API responses
+  - No root node (i.e. {data} instead of {order: {data}})
+
+---
+
+# Registering a Webhook
+
+```ruby
+require 'net/http'
+require 'json'
+setup_client('webhooks.json') do |client, uri|
+  webhook = {
+    type: 'json',
+    topic: 'product/update'
+    address: 'http://yourserver.com/shopify/webhooks'
+  }
+  request = Net::HTTP::Post.new(uri)
+  request.body = {webhook: webhook}.to_json
+
+  client.request(request)
+end
+```
+
+---
+
 # Supporting multiple Shops
+
+- Install App from App Store
+- Show how to set up an OAuth app from partners dashboard
 
 ---
 
@@ -127,6 +175,22 @@ Use the Embedded App SDK to give your customers a nicer experience
 
 - Provides hooks to use Shopify styled modals, popups, etc.
 - Keep user within their Admin instead of going to another website
+
+---
+
+# App Links
+
+- Provide contextual actions on shopify resources
+- Shortcuts to areas of your application
+- Added through the Partner Dashboard
+
+---
+
+![](application-link.png)
+
+---
+
+SCREENSHOT IN ADMIN
 
 ---
 
@@ -200,15 +264,6 @@ end
 
 ---
 
-# Theme Access
-
-### Not inteded as a tool for injecting app content into shop templates
-### Modifying templates is messy
-### Makes it difficult for an application to clean up after itself
-### Changes are lost if merchant installs new theme
-
----
-
 # Multipass
 
 - Only available to Shopify Plus customers
@@ -220,71 +275,6 @@ end
 # Registering a Multipass Customer
 
 ## FLOWCHART
-
----
-
-# App Links
-
-- Provide contextual actions on shopify resources
-- Shortcuts to areas of your application
-- Added through the Partner Dashboard
-
----
-
-![](application-link.png)
-
----
-
-SCREENSHOT IN ADMIN
-
----
-
-# Webhooks
-
-- Let us tell you when things have changed
-- Don't bite into your API call limits
-- Let you subscribe to the kinds of data you are interested in
-- Data is signed
-
----
-
-# Webhooks
-
-- You need the right permissions to register for a webhook
-  - Can't register for order creation webhooks if you can only read products
-- Don't include historical data
-  - Webhooks contain a snapshot of the data when it was delivered, not when it was queued
-
----
-
-# Call me Maybe
-
----
-
-# Webhooks
-
-- The data in the webhook is slightly different from our API responses
-  - No root node (i.e. {data} instead of {order: {data}})
-
----
-
-# Registering a Webhook
-
-```ruby
-require 'net/http'
-require 'json'
-setup_client('webhooks.json') do |client, uri|
-  webhook = {
-    type: 'json',
-    topic: 'product/update'
-    address: 'http://yourserver.com/shopify/webhooks'
-  }
-  request = Net::HTTP::Post.new(uri)
-  request.body = {webhook: webhook}.to_json
-
-  client.request(request)
-end
-```
 
 ---
 
