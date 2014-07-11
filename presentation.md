@@ -26,10 +26,6 @@ Box and Arrow simplification of REST API
 
 ---
 
-Shopify as the client, sending data to your server
-
----
-
 Your app embedded in Shopify storefront or admin
 
 ---
@@ -38,82 +34,89 @@ Your app embedded in Shopify storefront or admin
 
 ---
 
-# REST and Shopify
+# API Demo - List Products
 
-### Turn all of these into single slides
-
-All of Shopifys resources follow a similar pattern:
-
-- List a page of Resources:
-  `GET https://domain/admin/resource_name.json`
-- List a single Resource:
-  `GET https://domain/admin/resource_name/resource_id.json`
+## GET https://domain/admin/products.json
 
 ---
 
-# REST and Shopify
+# API Demo - Get Single Product
 
-- Create a Resource:
-  `POST https://domain/admin/resource_name.json`
-- Update a Resource:
-  `PUT https://domain/admin/resource_name/resource_id.json`
-- Destroy a Resource:
-  `DELETE https://domain/admin/resource_name/resource_id.json`
+## GET https://domain/admin/products/1234.json
 
 ---
 
-# Working with the API - HTTP Request
+# API Demo - Create A Product
 
- TODO: Just use plain HTTP requests
-
- ---
-
-# Working with the API - HTTP Response
-
-```ruby
-# Fetch a list of orders
-require 'net/http'
-uri = URI('https://justmops.myshopify.com/admin/orders.json')
-Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |client|
-  request = Net::HTTP::Get.new(uri)
-  request['Content-Type'] = 'application/json'
-  request['Accept'] = 'application/json'
-  request['X-Shopify-Access-Token'] = 'access token'
-
-  response = client.request(request)
-  puts response.body
-  # {"orders":[{"buyer_accepts_mark....
-end
-```
-
+## POST https://domain/admin/products.json
 
 ---
 
-# Shopify API Resources
+# API Demo - Update a Product
 
-The data in a response can be sent back to Shopify to update a resource:
+## PUT https://domain/admin/products/1234.json
 
-```ruby
-require 'net/http'
-require 'json'
-uri = URI('https://justmops.myshopify.com/admin/orders/1234.json')
-content = JSON.parse(authenticated_get_request(uri))
-# All Shopify resources are wrapped in a root object (pluralized for collections)
-order = content['order']
-order['note'] = 'Just jotting down a couple of notes on the order'
+---
 
-Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |client|
-  request = Net::HTTP::Put.new(uri)
-  request['X-Shopify-Access-Token'] = 'access token'
-  request['Content-Type'] = 'application/json'
-  request['Accept'] = 'application/json'
-  request.body = {'order' => order}.to_json
+# API Demo - Remove a Product
 
-  response = client.request(request)
-  # List, Show and Update all return 200 OK
-  puts response.code # 200
-end
-```
+## DELETE https://domain/admin/products/1234.json
+
+---
+
+# Shopify Success Codes
+
+---
+
+# 200 OK
+
+![](200-ok.jpg)
+
+---
+
+# 201 Created
+
+![](created.jpg)
+
+---
+
+# Shopify Error Codes
+
+---
+
+# 401 Unauthorized
+
+![](unauthorized.jpg)
+
+---
+
+# 404 Not Found
+
+![](not-found.jpg)
+
+---
+
+# 422 Unprocessable Entity
+
+![](unprocessable.jpg)
+
+---
+
+# 429 Too Many Requests
+
+![](too-many-requests.jpg)
+
+---
+
+# Any 500 Error
+
+![](server-error.jpg)
+
+---
+
+# Staying up to date with Webhooks
+
+Shopify as the client, sending data to your server DIAGRAM
 
 ---
 
@@ -144,22 +147,6 @@ end
 
 # Registering a Webhook
 
-```ruby
-require 'net/http'
-require 'json'
-setup_client('webhooks.json') do |client, uri|
-  webhook = {
-    type: 'json',
-    topic: 'product/update'
-    address: 'http://yourserver.com/shopify/webhooks'
-  }
-  request = Net::HTTP::Post.new(uri)
-  request.body = {webhook: webhook}.to_json
-
-  client.request(request)
-end
-```
-
 ---
 
 # Supporting multiple Shops
@@ -178,6 +165,18 @@ Use the Embedded App SDK to give your customers a nicer experience
 
 ---
 
+![](embedded-app.png)
+
+---
+
+![](embedded-app-urls.png)
+
+---
+
+![](embedded-app-sandbox.png)
+
+---
+
 # App Links
 
 - Provide contextual actions on shopify resources
@@ -190,7 +189,7 @@ Use the Embedded App SDK to give your customers a nicer experience
 
 ---
 
-SCREENSHOT IN ADMIN
+![](app-link-in-admin.png)
 
 ---
 
@@ -201,11 +200,25 @@ SCREENSHOT IN ADMIN
 
 ---
 
+# Script Tags
+
+## Let's you inject external javascript into a shops storefront
+## Associated to an app installation. Removing app also removes the script tags
+
+---
+
+# Registering a Script Tag
+
+---
+
 # Application Proxies
 
 - Allow you to render data in the storefront
-- Can return liquid and Shopify will render it!
-- Just returning plain HTML just works
+- Return application/liquid as the content type
+  - Shopify will render it with the shops theme!
+  - Any liquid inside the response will be evaluated by Shopify
+- Return anything else such as text/html
+  - Shopify will just render the content as is without any styles
 
 ---
 
@@ -235,35 +248,6 @@ end
 
 ---
 
-# Script Tags
-
-## Let's you inject external javascript into a shops storefront
-## Associated to an app installation. Removing app also removes the script tags
-
----
-
-# Registering a Script Tag
-
-```ruby
-require 'net/http'
-require 'json'
-# Let's ignore the boilerplate
-setup_client('script_tags.json') do |client, uri|
-  script_tag = {
-    script_tag: {
-      src: 'http://yourservice.com/some.js'
-    }
-  }
-  request = Net::HTTP::Post.new(uri)
-  request.body = script_tag.to_json
-
-  response = client.request(request)
-  puts response.code # 201
-end
-```
-
----
-
 # Multipass
 
 - Only available to Shopify Plus customers
@@ -279,6 +263,20 @@ end
 ---
 
 # Carrier Services
+
+---
+
+# http://manykitchens.com/
+
+# http://manykitchens.com/
+
+---
+
+# Fulfillment Services
+
+---
+
+http://theprintful.com
 
 ---
 
