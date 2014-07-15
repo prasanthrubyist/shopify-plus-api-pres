@@ -1,0 +1,16 @@
+<% unless carrier_service %>
+  <form action="/register_carrier" method="post">
+    <input type="submit" value="Register Carrier Service" class="btn btn-primary" />
+  </form>
+<% end %>
+
+<% unless fulfillment_service %>
+  <form action="/register_fulfillment" method="post">
+    <input type="submit" value="Register Fulfillment Service" class="btn btn-primary" />
+  </form>
+<% end %>
+
+<h1>Your Products</h1>
+<% products.each do |product| %>
+  <p><%= product['id'] %> - <%= product['title'] %></p>
+<% end %>
