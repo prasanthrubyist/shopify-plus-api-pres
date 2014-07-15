@@ -268,7 +268,7 @@ end
 
 # http://manykitchens.com/
 
-# http://manykitchens.com/
+# http://theprintful.com/
 
 ---
 
@@ -276,7 +276,7 @@ end
 
 ---
 
-http://theprintful.com
+# http://theprintful.com
 
 ---
 
