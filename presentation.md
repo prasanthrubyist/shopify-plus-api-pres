@@ -1,12 +1,21 @@
 # The Shopify API
 
-### Chris Saunders
+## Chris Saunders 
 
 ---
 
 # API?
 
 ## Allows developers to extend the Shopify platform
+
+---
+
+# The Team
+
+![original,51.2%](headshots/helen.jpeg)
+![original,100%](headshots/james.jpeg)
+![original,100%](headshots/adam.jpeg)
+![original,100%](headshots/nate.jpeg)
 
 ---
 
@@ -22,11 +31,7 @@
 
 ---
 
-Box and Arrow simplification of REST API
-
----
-
-Your app embedded in Shopify storefront or admin
+![original](api_requests.png)
 
 ---
 
@@ -34,33 +39,43 @@ Your app embedded in Shopify storefront or admin
 
 ---
 
-# API Demo - List Products
+# API Demo
 
-## GET https://domain/admin/products.json
+## List Products
 
----
-
-# API Demo - Get Single Product
-
-## GET https://domain/admin/products/1234.json
+### GET https://domain/admin/products.json
 
 ---
 
-# API Demo - Create A Product
+# API Demo
 
-## POST https://domain/admin/products.json
+## Get Single Product
 
----
-
-# API Demo - Update a Product
-
-## PUT https://domain/admin/products/1234.json
+### GET https://domain/admin/products/1234.json
 
 ---
 
-# API Demo - Remove a Product
+# API Demo
 
-## DELETE https://domain/admin/products/1234.json
+## Create A Product
+
+### POST https://domain/admin/products.json
+
+---
+
+# API Demo
+
+## Update a Product
+
+### PUT https://domain/admin/products/1234.json
+
+---
+
+# API Demo
+
+## Remove a Product
+
+### DELETE https://domain/admin/products/1234.json
 
 ---
 
@@ -70,13 +85,13 @@ Your app embedded in Shopify storefront or admin
 
 # 200 OK
 
-![](200-ok.jpg)
+![original](200-ok.jpg)
 
 ---
 
 # 201 Created
 
-![](created.jpg)
+![original](created.jpg)
 
 ---
 
@@ -86,37 +101,39 @@ Your app embedded in Shopify storefront or admin
 
 # 401 Unauthorized
 
-![](unauthorized.jpg)
+![original](unauthorized.jpg)
 
 ---
 
 # 404 Not Found
 
-![](not-found.jpg)
+![filtered](not-found.jpg)
 
 ---
 
 # 422 Unprocessable Entity
 
-![](unprocessable.jpg)
+![original](unprocessable.jpg)
 
 ---
 
 # 429 Too Many Requests
 
-![](too-many-requests.jpg)
+![original](too-many-requests.jpg)
 
 ---
 
 # Any 500 Error
 
-![](server-error.jpg)
+![original](server-error.jpg)
 
 ---
 
 # Staying up to date with Webhooks
 
-Shopify as the client, sending data to your server DIAGRAM
+---
+
+![original](webhook_example.png)
 
 ---
 
@@ -256,13 +273,11 @@ end
 
 ---
 
-# Registering a Multipass Customer
-
-## FLOWCHART
+# Carrier Services
 
 ---
 
-# Carrier Services
+![original](carrier_services.png)
 
 ---
 
@@ -305,6 +320,15 @@ end
 ---
 
 ![original](postman.png)
+
+---
+
+# Live Coding Demo
+
+* Build an application that authorizes against shopify
+* Fetches proucts from the Shopify API
+* Registers a carrier service to provide shipping rates
+* Registers a fulfillment service to provide inventory and tracking numbers
 
 ---
 
