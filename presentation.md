@@ -13,6 +13,7 @@
 # The Team
 
 ![original,51.2%](headshots/helen.jpeg)
+![original,51.2%](headshots/chris.jpeg)
 ![original,100%](headshots/james.jpeg)
 ![original,100%](headshots/adam.jpeg)
 ![original,100%](headshots/nate.jpeg)
@@ -239,10 +240,6 @@ Use the Embedded App SDK to give your customers a nicer experience
 
 ---
 
-![](app-proxies.png)
-
----
-
 # Application Proxy Example
 
 ```ruby
@@ -262,6 +259,11 @@ get '/proxies/products-with-even-ids' do
   """
 end
 ```
+
+---
+
+## http://teesforthepeople.com/
+## http://manykitchens.com/
 
 ---
 
