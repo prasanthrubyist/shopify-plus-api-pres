@@ -27,7 +27,6 @@
 
 <% products.each_slice(3) do |slice| %>
   <div class="row text-center">
-    <% puts slice.inspect %>
     <% slice.each do |product| %>
       <div class="col-md-4">
         <% if product['image'] %>

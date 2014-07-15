@@ -4,9 +4,7 @@ require 'sinatra/base'
 require 'omniauth-shopify-oauth2'
 require 'json'
 
-require './product'
-require './carrier_service'
-require './fulfillment_service'
+require './client'
 
 class ShopifyPlusDemo < Sinatra::Base
   enable :sessions
@@ -22,33 +20,109 @@ class ShopifyPlusDemo < Sinatra::Base
     }
   end
 
+  # Authentication
+  get '/login' do
+    erb :login
+  end
+
+  get '/logout' do
+    session.clear
+    redirect to('/')
+  end
+
+  get '/auth/:provider/callback' do
+    token = request.env["omniauth.auth"]["credentials"]["token"]
+    session[:access_token] = token
+    session[:shop] = params[:shop]
+    redirect to('/')
+  end
+
+  def client
+    Client.new(session)
+  end
+
+  def external_url
+    external_url = ENV['EXTERN_URL']
+    external_url ? external_url : raise(StandardError, 'Missing EXTERN_URL environment variable')
+  end
+
+  # Making a Simple API Call
   get '/' do
     redirect to('/login') unless session[:access_token]
-    erb :index, locals: {products: Product.new(session).all, carrier_service: session[:carrier_service], fulfillment_service: session[:fulfillment_service]}
+
+    erb :index, locals: {products: get_all_products, carrier_service: session[:carrier_service], fulfillment_service: session[:fulfillment_service]}
+  end
+
+  def get_all_products
+    response = client.get("/admin/products.json")
+    JSON.parse(response.body)['products']
   end
 
   # Carrier Services
   post '/register_carrier' do
-    carrier = CarrierService.new(session)
-    redirect to('/') if carrier.registered?
-    session[:carrier_service] = true if carrier.register
+    response = register_carrier_service
+    session[:carrier_service] = true if response.code == 201
     redirect to('/')
+  end
+
+  def register_carrier_service
+    carrier_service = {
+      name: 'Shopify Plus Demo Carrier',
+      callback_url: "#{external_url}/rates",
+      format: 'json',
+      service_discovery: true
+    }
+    client.post('/admin/carrier_services.json', {carrier_service: carrier_service})
   end
 
   post '/rates' do
     content_type :json
-    carrier = CarrierService.new({})
-    rates = carrier.rates(JSON.parse(request.body.read)['rate'])
-    rates.to_json
+    carrier_rates.to_json
+  end
+
+  def carrier_rates
+    {
+      rates: [
+        {
+          service_name: 'Escargo Express -- Bike Courier',
+          service_code: 'EE-Bike',
+          total_price: 500,
+          currency: 'CAD'
+        },
+        {
+          service_name: 'Escargo Express -- National',
+          service_code: 'EE-National',
+          total_price: 1500,
+          currency: 'CAD'
+        },
+        {
+          service_name: 'Escargo Express -- Neglected Class',
+          service_code: 'EE-Neglected',
+          total_price: 100,
+          currency: 'CAD',
+        }
+      ]
+    }
   end
 
   # Fulfillment Services
 
   post '/register_fulfillment' do
-    fulfillment = FulfillmentService.new(session)
-    redirect to('/') if fulfillment.registered?
-    session[:fulfillment_service] = true if fulfillment.register
+    response = register_fulfillment_service
+    session[:fulfillment_service] = true if response.code == 201
     redirect to('/')
+  end
+
+  def register_fulfillment_service
+    fulfillment_service = {
+      name: 'Moms Friendly Robot Co',
+      callback_url: "#{external_url}/fulfillments",
+      format: 'json',
+      inventory_management: true,
+      tracking_support: true,
+      requires_shipping_method: true
+    }
+    client.post('/admin/fulfillment_services', {fulfillment_service: fulfillment_service})
   end
 
   get '/fulfillments/fetch_tracking_numbers.json' do
@@ -67,24 +141,15 @@ class ShopifyPlusDemo < Sinatra::Base
 
   get '/fulfillments/fetch_stock.json' do
     content_type :json
-    fulfillment = FulfillmentService.new({})
-    fulfillment.stock_levels(params[:sku]).to_json
+    stock_levels(params[:sku]).to_json
   end
 
-  # Authentication
-  get '/login' do
-    erb :login
-  end
-
-  get '/logout' do
-    session.clear
-    redirect to('/')
-  end
-
-  get '/auth/:provider/callback' do
-    token = request.env["omniauth.auth"]["credentials"]["token"]
-    session[:access_token] = token
-    session[:shop] = params[:shop]
-    redirect to('/')
+  def stock_levels(sku=nil)
+    levels = {
+      "abra" => 50,
+      "cadabra" => 100,
+      "alakazam" => 20
+    }
+    sku ? {sku => levels[sku]} : levels
   end
 end
