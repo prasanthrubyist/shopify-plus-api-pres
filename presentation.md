@@ -15,8 +15,40 @@
 ![original,51.2%](headshots/helen.jpeg)
 ![original,51.2%](headshots/chris.jpeg)
 ![original,100%](headshots/james.jpeg)
-![original,100%](headshots/adam.jpeg)
 ![original,100%](headshots/nate.jpeg)
+![original,100%](headshots/adam.jpeg)
+
+^From left to right: Helen Tran, Chris Saunders, James Macaulay, Nate Smith and Adam Doeler
+
+---
+
+# What are the kinds of ways an application can integrate with Shopify?
+
+---
+
+![original](api_requests.png)
+
+^So you can have the typical your application is calling Shopify and manipulating data
+
+---
+
+![original](shopify_webhooks.png)
+
+^Alternatively there's the kinds of apps where Shopify contacts you
+
+^This could include things like providing Shipping Rates
+
+^Or simply being informed about what kinds of events have happened to a shop using Webhooks
+
+---
+
+![original](embedded_apps.png)
+
+^Finally there's the situation where your application is embedded within Shopify
+
+^The simplest could be that your application is embedded within the admin using our Embedded App SDK
+
+^You could alternatively embed your application, or part of it within a Merchants storefront
 
 ---
 
@@ -37,6 +69,16 @@
 ---
 
 # API Demo
+
+^ Now you'll want to open up the Postman Chrome Extension
+
+---
+
+# bit.ly/splusdemo
+
+---
+
+![original](postman_splus.png)
 
 ---
 
@@ -88,15 +130,23 @@
 
 ![original](200-ok.jpg)
 
+^ For most successful requests you'll simply get a 200 back.
+
+^ Any successful GET request will return a 200 as will any successful PUT (i.e. updating a resource)
+
 ---
 
 # 201 Created
 
 ![original](created.jpg)
 
+^ You'll see this response when the resource your were trying to create was successful
+
 ---
 
 # Shopify Error Codes
+
+^ Not everything is a 200 though, and we need to know what the other Codes in Shopify mean
 
 ---
 
@@ -104,11 +154,27 @@
 
 ![original](unauthorized.jpg)
 
+^ Either your Access Token has been revoked, is absent or is invalid
+
+---
+
+# 403 Forbidden
+
+![original](forbidden.jpg)
+
+^ This means that the access token you are using doesn't have the correct access scope to read the data you've requested.
+
+^ You can increase the permissions by getting the user to re-authorize your application with a the improved scopes
+
 ---
 
 # 404 Not Found
 
-![filtered](not-found.jpg)
+![original](not-found.jpg)
+
+^ This one is pretty self-explainitory. The resource you requested doesn't exist.
+
+^ Normally you'll experience these when trying to fetch or update something that was previously destroyed
 
 ---
 
@@ -116,17 +182,34 @@
 
 ![original](unprocessable.jpg)
 
+^ Something in your request was invalid. Often it's a missing required parameter or you forgot your root JSON node
+
 ---
 
 # 429 Too Many Requests
 
 ![original](too-many-requests.jpg)
 
+^ You've burned through your API limit
+
+^ By default your request bucket is 40 requests with a refresh rate of 2 requests per second
+
+^ If your application is very active or aggressive you can sometimes end up chewing through all those requests
+
+^ If you do, this is the response you'll get. This is a case that you'll want to keep your eyes out for
+
+
 ---
 
 # Any 500 Error
 
 ![original](server-error.jpg)
+
+^ Something has broken in Shopify.
+
+^ Sometimes it could be that our service is legitimately down
+
+^ Often times there was something included in the request that we weren't expecting
 
 ---
 
@@ -140,88 +223,116 @@
 
 # Staying up to date with Webhooks
 
-- Let us tell you when things have changed
-- Don't bite into your API call limits
-- Let you subscribe to the kinds of data you are interested in
-- Data is signed
+^ Let us tell you when things have changed
+  Don't bite into your API call limits
+  Let you subscribe to the kinds of data you are interested in
+  Data is signed
 
 ---
 
-# Webhooks
+# A little bit about Webhooks
 
 - You need the right permissions to register for a webhook
-  - Can't register for order creation webhooks if you can only read products
-- Don't include historical data
-  - Webhooks contain a snapshot of the data when it was delivered, not when it was queued
+
+^ Can't register for order creation webhooks if you can only read products
+
+- Webhooks don't include historical data
+
+^ Webhooks contain a snapshot of the data when it was delivered, not when it was queued
 
 ---
 
-# Webhooks
+# Handling Webhooks
 
 - The data in the webhook is slightly different from our API responses
-  - No root node (i.e. {data} instead of {order: {data}})
+
+```json
+{"title": "Product Title", "id": 1234, "etc": "..."}
+```
+
+^ No root node (i.e. {data} instead of {order: {data}})
 
 ---
 
 # Registering a Webhook
 
+^ You can use requestb.in for easily inspecting all the webhook data
+
 ---
 
 # Supporting multiple Shops
 
-- Install App from App Store
-- Show how to set up an OAuth app from partners dashboard
+^ Using private app keys works if you are doing a solution for a single merchant
+
+^ But if your solution ends up being something a lot of merchants end up needing, then
+  using OAuth is a better solution
+
+^ You'll need to use an application created through the Partners Panel
 
 ---
 
 # Serving your Apps
 
-Use the Embedded App SDK to give your customers a nicer experience
+^ Serving your applications using the Embedded App SDK to give your users a better experience
 
-- Provides hooks to use Shopify styled modals, popups, etc.
-- Keep user within their Admin instead of going to another website
+^ Some of the reasons why you'd want to do this over an app on another site
 
----
+^ Provides hooks to use Shopify styled modals, popups, etc.
 
-![](embedded-app.png)
-
----
-
-![](embedded-app-urls.png)
+^ Keep user within their Admin instead of going to another website
 
 ---
 
-![](embedded-app-sandbox.png)
+![original](embedded-app.png)
+
+^ For example here is one of Shopify's applications
+
+^ As you can see, the merchant is still "on shopify"
+
+---
+
+![original](embedded-app-urls.png)
+
+^ But if we decompose the URL we can see what part is shopify and what part is the embedded application
+
+---
+
+![original](embedded-app-sandbox.png)
+
+^ And here is what parts are actually shopify and what parts are your application
+
+^ The embedded app is sandboxed from the admin and uses the Embedded app SDK to provide a communication layer across the sandbox
 
 ---
 
 # App Links
 
-- Provide contextual actions on shopify resources
-- Shortcuts to areas of your application
-- Added through the Partner Dashboard
+^ These are sort of like application shortcuts
 
----
+^ They can be tied to certain contexts that will get sent off to the right part of your application
 
-![](application-link.png)
+^ These need to be added through the partners dashboard
 
 ---
 
 ![](app-link-in-admin.png)
+
+^ The order printer app uses an app link such that merchants can quickly get to the right context for printing their packing slips and invoices
 
 ---
 
 # Shop Storefront
 
 ## Script Tags to easily provide storefront javascript
-## Application proxies to provide custom URLs
+## Application proxies to provide custom URLs and content
 
 ---
 
 # Script Tags
 
-## Let's you inject external javascript into a shops storefront
-## Associated to an app installation. Removing app also removes the script tags
+^ Script tags provide a clean way of injecting Javascript into a shops storefront
+
+^ Associated with the app installation. So when the app is uninstalled, the script tags are removed as well.
 
 ---
 
@@ -233,10 +344,13 @@ Use the Embedded App SDK to give your customers a nicer experience
 
 - Allow you to render data in the storefront
 - Return application/liquid as the content type
-  - Shopify will render it with the shops theme!
-  - Any liquid inside the response will be evaluated by Shopify
 - Return anything else such as text/html
-  - Shopify will just render the content as is without any styles
+
+^ Shopify will render the response within the shops theme
+
+^ Any liquid inside the response will be evaluated by Shopify
+
+^ Non-liquid responses will simply have their contents rendered as is
 
 ---
 
@@ -260,10 +374,18 @@ get '/proxies/products-with-even-ids' do
 end
 ```
 
+^ Here is an example of a simple application proxy that returns some liquid for filtering out all
+  products in the animate-objects collection whose id is an even number
+
 ---
 
 ## http://teesforthepeople.com/
 ## http://manykitchens.com/
+
+^ Here are some shops that are using Application proxies to do some really interesting things
+
+^ Tees for the people uses an application proxy to render an entire custom shirt builder that will
+  create a series of products for a campaign.
 
 ---
 
@@ -273,9 +395,21 @@ end
 - Associates Shopify customers with external identities (e.g from forums)
 - Shop needs to have multipass enabled on their Checkout Settings
 
+^ Sometimes we'll have merchants who have other channels for bringing their customers to their storefront
+
+^ For example they could use a forum and don't want those users to need to create another account
+
+^ Using multipass you can register a customer and log them into the storefront
+
 ---
 
 # Carrier Services
+
+^ Carrier Services are a relatively new API that allows merchants to integrate with any shipping provider
+
+^ Shopify contacts the carrier service with several details: Cart contents, Source Address, Destination and so on
+
+^ Your service can return custom rates based on this information
 
 ---
 
@@ -287,13 +421,25 @@ end
 
 # http://theprintful.com/
 
+^ Again here's some examples of some services that use carrier services
+
+^ Many Kitchens ships from several locations, so they use the carrier service to aggregate all the shipping fees into a single price
+
+^ Printful allows a merchant to use the shipping rates based on their fulfillment center
+
 ---
 
 # Fulfillment Services
 
+^ This is another API that is somewhat new. Again, it's Shopify calling out to your service.
+
+^ The service provides details about inventory levels as well as shipping details of various order fulfillments
+
 ---
 
 # http://theprintful.com
+
+^ Because the printful also provides fulfillment for merchants, they let Shopify know when an order has actuall shipped
 
 ---
 
@@ -305,12 +451,14 @@ end
 
 ---
 
-# Exposing your environment to the world
+## Exposing your environment to the world
 
-`ngrok 3000`
+---
 
-- You can use ngrok to expose your development server to the world
-- Use the given domain when registering webhooks, carrier services, etc.
+![original](ngrok.png)
+
+^ You can use ngrok to expose your development server to the world
+^ Use the given domain when registering webhooks, carrier services, etc.
 
 ---
 
@@ -321,11 +469,17 @@ end
 
 ---
 
+# Plain HTTP Requests
+
+---
+
 ![original](postman.png)
 
 ---
 
 # Live Coding Demo
+
+## Goals:
 
 * Build an application that authorizes against shopify
 * Fetches proucts from the Shopify API
