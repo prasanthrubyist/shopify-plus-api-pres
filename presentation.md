@@ -5,6 +5,14 @@
 ^ I'll be covering the various aspects of the Shopify API as well as
   some tools that you use to simplify working with the API
 
+^ Incognito Window
+  http://ngrok.com
+  http://requestb.in
+  chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm/index.html
+
+^ Regular Window
+  shopify-plus-test-shop.myshopify.com/admin/staff
+
 ---
 
 # API?
@@ -236,10 +244,17 @@
 
 # Staying up to date with Webhooks
 
+^ One of the ways you could keep up to date with Shopify
+  is through polling, though that can lead to unnecessary
+  API usage. Especially if data hasn't changed
+
 ^ Let us tell you when things have changed
-  Don't bite into your API call limits
-  Let you subscribe to the kinds of data you are interested in
-  Data is signed
+
+^ Webhooks don't eat into your API call limits
+
+^ Let you subscribe to the kinds of data you are interested in
+
+^ Data is signed so you can verify the integrity
 
 ---
 
@@ -281,6 +296,16 @@
   using OAuth is a better solution
 
 ^ You'll need to use an application created through the Partners Panel
+
+---
+
+# Scoping of Webhooks
+
+^ You don't need to worry about collision with API clients or other merchants
+
+^ Apps are unable to see webhooks that have been registered by another client
+
+^ When your app is removed, the associated webhooks will also be removed
 
 ---
 
@@ -427,10 +452,6 @@ end
 ^ Shopify contacts the carrier service with several details: Cart contents, Source Address, Destination and so on
 
 ^ Your service can return custom rates based on this information
-
----
-
-![original](carrier_services.png)
 
 ---
 
