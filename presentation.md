@@ -1,54 +1,61 @@
 # The Shopify API
 
-## Chris Saunders 
+^ Hello my name is Chris Saunders
+
+^ I'll be covering the various aspects of the Shopify API as well as
+  some tools that you use to simplify working with the API
 
 ---
 
 # API?
 
-## Allows developers to extend the Shopify platform
+^ So why do we have an API?
+
+^ There's a lot of features merchants want, though they may not be required by everyone
+
+^ By providing an API we make it easier for developers to extend the Shopify platform to meet those needs
 
 ---
 
-# The Team
+# Meet The Team
 
-![original,51.2%](headshots/helen.jpeg)
-![original,51.2%](headshots/chris.jpeg)
+![original,51%](headshots/helen.jpeg)
+![original,50%](headshots/chris.jpeg)
 ![original,100%](headshots/james.jpeg)
 ![original,100%](headshots/nate.jpeg)
 ![original,100%](headshots/adam.jpeg)
 
-^From left to right: Helen Tran, Chris Saunders, James Macaulay, Nate Smith and Adam Doeler
+^ From left to right: Helen Tran, Chris Saunders, James MacAulay, Nate Smith and Adam Doeler
 
 ---
 
-# What are the kinds of ways an application can integrate with Shopify?
+# Ways to Integrate with Shopify
 
 ---
 
-![original](api_requests.png)
+![original,100%](api_requests.jpg)
 
-^So you can have the typical your application is calling Shopify and manipulating data
+^You can be a typical application where you are simply making calls to Shopify and reading or manipulating data
 
 ---
 
-![original](shopify_webhooks.png)
+![original,100%](shopify_webhooks.jpg)
 
 ^Alternatively there's the kinds of apps where Shopify contacts you
 
-^This could include things like providing Shipping Rates
+^This could include things like being a Carrier Service that provides Shipping Rates
 
-^Or simply being informed about what kinds of events have happened to a shop using Webhooks
+^Or simply being informed about what kinds of events have happened to a shop through the use of Webhooks
 
 ---
 
-![original](embedded_apps.png)
+![original,100%](embedded_apps.jpg)
 
 ^Finally there's the situation where your application is embedded within Shopify
 
-^The simplest could be that your application is embedded within the admin using our Embedded App SDK
+^The most basic way this is achieved is through the use of our Embedded App SDK which makes your app useable from within the admin
 
-^You could alternatively embed your application, or part of it within a Merchants storefront
+^You can also embed your application, or part of it within a shops storefront
 
 ---
 
@@ -62,23 +69,33 @@
 
 ## Complex Processing
 
----
-
-![original](api_requests.png)
+^ Some of to the things merchants have required custom solutions in the past, include: (read listed items)
 
 ---
 
-# API Demo
+![original](dig-in.jpg)
 
-^ Now you'll want to open up the Postman Chrome Extension
+^ Alright, so now that we've covered some of the reasons for using the API let's dig into things
+
+---
+
+![original,100%](api_requests.jpg)
+
+^ We'll start off by covering how to play with the API
+
+^ Now you'll want to open up the Postman Chrome Extension if you have it installed
 
 ---
 
 # bit.ly/splusdemo
 
+^ I've gone ahead and crafted several examples of how an API request is made to Shopify that you can import into your Postman
+
 ---
 
 ![original](postman_splus.png)
+
+^ This is the import screen, simply set the import URL
 
 ---
 
@@ -213,11 +230,7 @@
 
 ---
 
-# Staying up to date with Webhooks
-
----
-
-![original](webhook_example.png)
+![original,100%](shopify_webhooks.jpg)
 
 ---
 
@@ -268,6 +281,10 @@
   using OAuth is a better solution
 
 ^ You'll need to use an application created through the Partners Panel
+
+---
+
+![original,100%](embedded_apps.jpg)
 
 ---
 
