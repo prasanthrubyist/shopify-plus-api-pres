@@ -30,10 +30,13 @@
 ![original,51%](headshots/helen.jpeg)
 ![original,50%](headshots/chris.jpeg)
 ![original,100%](headshots/james.jpeg)
-![original,100%](headshots/nate.jpeg)
+![original,50%](headshots/nate.jpeg)
 ![original,100%](headshots/adam.jpeg)
 
 ^ From left to right: Helen Tran, Chris Saunders, James MacAulay, Nate Smith and Adam Doeler
+
+^ We're out there building new features, fixing bugs you come across and even watching the forums to
+  help you solve any problems you might be experiencing
 
 ---
 
