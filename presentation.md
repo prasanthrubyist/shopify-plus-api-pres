@@ -98,7 +98,7 @@
 
 ---
 
-# bit.ly/splusdemo
+# bit.ly/sapidemo
 
 ^ I've gone ahead and crafted several examples of how an API request is made to Shopify that you can import into your Postman
 
@@ -226,6 +226,18 @@
 
 ^ If you do, this is the response you'll get. This is a case that you'll want to keep your eyes out for
 
+---
+
+# 400 Bad Request
+
+![original](bad_request.jpg)
+
+^ We've decided to respond with a generic error
+
+^ Typically this is the default response code thrown out by strong params (shopify is built on rails)
+
+^ Most often it means you are missing your root node
+
 
 ---
 
@@ -291,17 +303,6 @@
 
 ---
 
-# Supporting multiple Shops
-
-^ Using private app keys works if you are doing a solution for a single merchant
-
-^ But if your solution ends up being something a lot of merchants end up needing, then
-  using OAuth is a better solution
-
-^ You'll need to use an application created through the Partners Panel
-
----
-
 # Scoping of Webhooks
 
 ^ You don't need to worry about collision with API clients or other merchants
@@ -309,6 +310,43 @@
 ^ Apps are unable to see webhooks that have been registered by another client
 
 ^ When your app is removed, the associated webhooks will also be removed
+
+---
+
+# Carrier Services
+
+^ Carrier Services are a relatively new API that allows merchants to integrate with any shipping provider
+
+^ Shopify contacts the carrier service with several details: Cart contents, Source Address, Destination and so on
+
+^ Your service can return custom rates based on this information
+
+---
+
+# http://manykitchens.com/
+
+# http://theprintful.com/
+
+^ Again here's some examples of some services that use carrier services
+
+^ Many Kitchens ships from several locations, so they use the carrier service to aggregate all the shipping fees into a single price
+
+^ Printful allows a merchant to use the shipping rates based on their fulfillment center
+
+---
+
+# Fulfillment Services
+
+^ This is another API that is somewhat new. Again, it's Shopify calling out to your service.
+
+^ The service provides details about inventory levels as well as shipping details of various order fulfillments
+
+---
+
+# http://theprintful.com
+
+^ Because the printful also provides fulfillment for merchants, they let Shopify know when an order has actuall shipped
+
 
 ---
 
@@ -425,9 +463,8 @@ end
 ---
 
 ## http://teesforthepeople.com/
-## http://manykitchens.com/
 
-^ Here are some shops that are using Application proxies to do some really interesting things
+^ Here are some shops that is doing some pretty crazy stuff using an Application proxies to do some really interesting things
 
 ^ Tees for the people uses an application proxy to render an entire custom shirt builder that will
   create a series of products for a campaign.
@@ -448,39 +485,14 @@ end
 
 ---
 
-# Carrier Services
+# Supporting multiple Shops
 
-^ Carrier Services are a relatively new API that allows merchants to integrate with any shipping provider
+^ Using private app keys works if you are doing a solution for a single merchant
 
-^ Shopify contacts the carrier service with several details: Cart contents, Source Address, Destination and so on
+^ But if your solution ends up being something a lot of merchants end up needing, then
+  using OAuth is a better solution
 
-^ Your service can return custom rates based on this information
-
----
-
-# http://manykitchens.com/
-
-# http://theprintful.com/
-
-^ Again here's some examples of some services that use carrier services
-
-^ Many Kitchens ships from several locations, so they use the carrier service to aggregate all the shipping fees into a single price
-
-^ Printful allows a merchant to use the shipping rates based on their fulfillment center
-
----
-
-# Fulfillment Services
-
-^ This is another API that is somewhat new. Again, it's Shopify calling out to your service.
-
-^ The service provides details about inventory levels as well as shipping details of various order fulfillments
-
----
-
-# http://theprintful.com
-
-^ Because the printful also provides fulfillment for merchants, they let Shopify know when an order has actuall shipped
+^ You'll need to use an application created through the Partners Panel
 
 ---
 
@@ -523,7 +535,7 @@ end
 ## Goals:
 
 * Build an application that authorizes against shopify
-* Fetches proucts from the Shopify API
+* Fetches products from the Shopify API
 * Registers a carrier service to provide shipping rates
 * Registers a fulfillment service to provide inventory and tracking numbers
 
