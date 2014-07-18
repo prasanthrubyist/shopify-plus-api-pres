@@ -522,6 +522,12 @@ end
 
 ---
 
+# Storefront Ajax Playground
+
+http://bit.ly/ajaxApiSandbox
+
+---
+
 # Plain HTTP Requests
 
 ---
