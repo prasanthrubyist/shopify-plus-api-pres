@@ -13,7 +13,7 @@ class ShopifyPlusDemo < Sinatra::Base
   # Configure Ominauth middleware
   use OmniAuth::Builder do
     provider :shopify, '0241b0c738afeff6dcc0ba15bfddaf40', 'a34a74a13bd4e5df65d945abf32a505c',
-    scope: 'read_products,write_shipping,write_fulfillments',
+    scope: 'write_products,write_shipping,write_fulfillments',
     setup: lambda { |env|
       params = Rack::Utils.parse_query(env['QUERY_STRING'])
       env['omniauth.strategy'].options[:client_options][:site] = "https://#{params['shop']}"
@@ -115,7 +115,7 @@ class ShopifyPlusDemo < Sinatra::Base
 
   def register_fulfillment_service
     fulfillment_service = {
-      name: 'Moms Friendly Robot Co',
+      name: 'Moms Evil Robot Co',
       callback_url: "#{external_url}/fulfillments",
       format: 'json',
       inventory_management: true,
