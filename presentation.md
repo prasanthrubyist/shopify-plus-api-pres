@@ -98,9 +98,11 @@
 
 ---
 
-# bit.ly/sapidemo
+## http://bit.ly/shopify-api-demos
 
 ^ I've gone ahead and crafted several examples of how an API request is made to Shopify that you can import into your Postman
+
+^ The snippets will be generated specific to your shop so you can see the changes as you make them
 
 ---
 
