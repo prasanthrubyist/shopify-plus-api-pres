@@ -1,0 +1,41 @@
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Shopify<sup>+</sup> Demo</a>
+    </div>
+
+    <% unless carrier_service %>
+      <form action="/register_carrier" method="post" class="navbar-form navbar-right">
+        <input type="submit" value="Register Carrier Service" class="btn btn-default" />
+      </form>
+    <% end %>
+
+    <% unless fulfillment_service %>
+      <form action="/register_fulfillment" method="post" class="navbar-form navbar-right">
+        <input type="submit" value="Register Fulfillment Service" class="btn btn-default" />
+      </form>
+    <% end %>
+
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 text-left">
+    <h1>Your Products</h1>
+  </div>
+</div>
+
+<% products.each_slice(3) do |slice| %>
+  <div class="row text-center">
+    <% slice.each do |product| %>
+      <div class="col-md-4">
+        <% if product['image'] %>
+          <img width="100px" height="100px" src="<%= product['image']['src'] %>" />
+        <% else %>
+          <img width="100px" height="100px" src="http://i.imgur.com/qvBR629.gif" />
+        <% end %>
+        <p><%= product['title'] %></p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
