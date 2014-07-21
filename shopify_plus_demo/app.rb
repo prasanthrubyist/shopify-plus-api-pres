@@ -8,12 +8,12 @@ require './client'
 
 class ShopifyPlusDemo < Sinatra::Base
   enable :sessions
-  set :session_secret, '2dff6b43237fe58c21d1b28f651c7b58'
+  set :session_secret, 'MAKE THIS SOMETHING SECRET'
 
   # Configure Ominauth middleware
   use OmniAuth::Builder do
-    provider :shopify, '0241b0c738afeff6dcc0ba15bfddaf40', 'a34a74a13bd4e5df65d945abf32a505c',
-    scope: 'write_products,write_shipping,write_fulfillments',
+    provider :shopify, 'API KEY FROM PARTNERS DASHBOARD', 'API SECRET FROM PARTNERS DASHBOARD',
+    scope: 'PERMISSIONS YOU WANT TO USE SUCH AS: read_products',
     setup: lambda { |env|
       params = Rack::Utils.parse_query(env['QUERY_STRING'])
       env['omniauth.strategy'].options[:client_options][:site] = "https://#{params['shop']}"
