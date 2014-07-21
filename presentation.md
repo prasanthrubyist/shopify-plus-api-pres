@@ -27,11 +27,11 @@
 
 # Meet The Team
 
-![original,51%](headshots/helen.jpeg)
-![original,50%](headshots/chris.jpeg)
-![original,100%](headshots/james.jpeg)
-![original,50%](headshots/nate.jpeg)
-![original,100%](headshots/adam.jpeg)
+![original,51%](images/headshots/helen.jpeg)
+![original,50%](images/headshots/chris.jpeg)
+![original,100%](images/headshots/james.jpeg)
+![original,50%](images/headshots/nate.jpeg)
+![original,100%](images/headshots/adam.jpeg)
 
 ^ From left to right: Helen Tran, Chris Saunders, James MacAulay, Nate Smith and Adam Doeler
 
@@ -44,13 +44,13 @@
 
 ---
 
-![original,100%](api_requests.jpg)
+![original,100%](images/api_requests.jpg)
 
 ^You can be a typical application where you are simply making calls to Shopify and reading or manipulating data
 
 ---
 
-![original,100%](shopify_webhooks.jpg)
+![original,100%](images/shopify_webhooks.jpg)
 
 ^Alternatively there's the kinds of apps where Shopify contacts you
 
@@ -60,7 +60,7 @@
 
 ---
 
-![original,100%](embedded_apps.jpg)
+![original,100%](images/embedded_apps.jpg)
 
 ^Finally there's the situation where your application is embedded within Shopify
 
@@ -84,13 +84,13 @@
 
 ---
 
-![original](dig-in.jpg)
+![original](images/dig-in.jpg)
 
 ^ Alright, so now that we've covered some of the reasons for using the API let's dig into things
 
 ---
 
-![original,100%](api_requests.jpg)
+![original,100%](images/api_requests.jpg)
 
 ^ We'll start off by covering how to play with the API
 
@@ -106,7 +106,7 @@
 
 ---
 
-![original](postman_splus.png)
+![original](images/postman_splus.png)
 
 ^ This is the import screen, simply set the import URL
 
@@ -158,7 +158,7 @@
 
 # 200 OK
 
-![original](200-ok.jpg)
+![original](images/200-ok.jpg)
 
 ^ For most successful requests you'll simply get a 200 back.
 
@@ -168,7 +168,7 @@
 
 # 201 Created
 
-![original](created.jpg)
+![original](images/created.jpg)
 
 ^ You'll see this response when the resource your were trying to create was successful
 
@@ -182,7 +182,7 @@
 
 # 401 Unauthorized
 
-![original](unauthorized.jpg)
+![original](images/unauthorized.jpg)
 
 ^ Either your Access Token has been revoked, is absent or is invalid
 
@@ -190,7 +190,7 @@
 
 # 403 Forbidden
 
-![original](forbidden.jpg)
+![original](images/forbidden.jpg)
 
 ^ This means that the access token you are using doesn't have the correct access scope to read the data you've requested.
 
@@ -200,7 +200,7 @@
 
 # 404 Not Found
 
-![original](not-found.jpg)
+![original](images/not-found.jpg)
 
 ^ This one is pretty self-explainitory. The resource you requested doesn't exist.
 
@@ -210,7 +210,7 @@
 
 # 422 Unprocessable Entity
 
-![original](unprocessable.jpg)
+![original](images/unprocessable.jpg)
 
 ^ Something in your request was invalid. Often it's a missing required parameter or you forgot your root JSON node
 
@@ -218,7 +218,7 @@
 
 # 429 Too Many Requests
 
-![original](too-many-requests.jpg)
+![original](images/too-many-requests.jpg)
 
 ^ You've burned through your API limit
 
@@ -232,7 +232,7 @@
 
 # 400 Bad Request
 
-![original](bad_request.jpg)
+![original](images/bad_request.jpg)
 
 ^ We've decided to respond with a generic error
 
@@ -245,7 +245,7 @@
 
 # Any 500 Error
 
-![original](server-error.jpg)
+![original](images/server-error.jpg)
 
 ^ Something has broken in Shopify.
 
@@ -255,7 +255,7 @@
 
 ---
 
-![original,100%](shopify_webhooks.jpg)
+![original,100%](images/shopify_webhooks.jpg)
 
 ---
 
@@ -352,7 +352,7 @@
 
 ---
 
-![original,100%](embedded_apps.jpg)
+![original,100%](images/embedded_apps.jpg)
 
 ---
 
@@ -368,7 +368,7 @@
 
 ---
 
-![original](embedded-app.png)
+![original](images/embedded-app.png)
 
 ^ For example here is one of Shopify's applications
 
@@ -376,13 +376,13 @@
 
 ---
 
-![original](embedded-app-urls.png)
+![original](images/embedded-app-urls.png)
 
 ^ But if we decompose the URL we can see what part is shopify and what part is the embedded application
 
 ---
 
-![original](embedded-app-sandbox.png)
+![original](images/embedded-app-sandbox.png)
 
 ^ And here is what parts are actually shopify and what parts are your application
 
@@ -400,7 +400,7 @@
 
 ---
 
-![](app-link-in-admin.png)
+![](images/app-link-in-admin.png)
 
 ^ The order printer app uses an app link such that merchants can quickly get to the right context for printing their packing slips and invoices
 
@@ -510,7 +510,7 @@ end
 
 ---
 
-![original](ngrok.png)
+![original](images/ngrok.png)
 
 ^ You can use ngrok to expose your development server to the world
 ^ Use the given domain when registering webhooks, carrier services, etc.
@@ -534,7 +534,7 @@ http://bit.ly/ajaxApiSandbox
 
 ---
 
-![original](postman.png)
+![original](images/postman.png)
 
 ---
 
